@@ -28,7 +28,8 @@
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
-      record: "{{ instances }}.{{ domain_name }}" #mongodb.nirfaws.online
+      record: "{{ item.item }}.{{ domain_name }}" #mongodb.nirfaws.online
       type: A
       ttl: 1
       value: "{{ item.instances[0].private_ip_address }}"
+    loop: "{{ ec2_output.results }}"
