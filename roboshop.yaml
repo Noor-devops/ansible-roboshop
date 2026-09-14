@@ -20,9 +20,10 @@
   - name: print ec2_output
     debug:
       msg: "{{ ec2_output }}"
-  # - name: getting private ip address
-  #   debug:
-  #     msg: "privateIP: {{ ec2_output.instances[0].private_ip_address }}"
+  - name: getting private ip address
+    debug:
+      msg: "Instance Name: {{ item.item }} privateIP: {{ item.instances[0].private_ip_address }}"
+    loop: "{{ ec2_output.results }}"
   # - name: create r53 records
   #   amazon.aws.route53:
   #     state: present
