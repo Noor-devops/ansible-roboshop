@@ -24,7 +24,7 @@
           - roboshop-common
       loop: "{{ instances }}"
       register: ec2_output
-      when: action == "create"
+      when: action == "create" 
 
     - name: create r53 records
       amazon.aws.route53:
