@@ -43,7 +43,7 @@
       record: "{{ domain_name }}" #nirfaws.online
       type: A
       ttl: 1
-      value: "{{ item.instances[0].publie_ip_address }}"
+      value: ["{{ item.instances[0].publie_ip_address }}"]
       overwrite: yes
     loop: "{{ ec2_output.results }}"
     when:
