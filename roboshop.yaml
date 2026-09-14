@@ -13,3 +13,6 @@
   - name: print ec2_output
     debug:
       msg: "{{ ec2_output }}"
+  - name: getting private ip address
+    debug:
+      msg: "privateIP: {{ name.instances[0].private_ip_address }}"
