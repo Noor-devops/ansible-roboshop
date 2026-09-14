@@ -1,0 +1,12 @@
+- name: for my practice
+  hosts: local
+  connection: local
+  tasks:
+  - name: loops
+    debug:
+      msg: "{{ item }}"
+    loop: 
+    - noor 
+    - afrin 
+    - shanu
+    - milsaht
