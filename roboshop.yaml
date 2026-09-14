@@ -1,0 +1,12 @@
+- name: roboshop instances management
+  hosts: local
+  connection: local
+  tasks:
+  - name: launching/creating ec2 instances
+    amazon.aws.ec2_instance:
+      name: mongodb
+      instance_type: t3.micro
+      image_id: ami-0220d79f3f480ecf5
+      region: us-east-1
+      security_groups: roboshop-common
+      
