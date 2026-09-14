@@ -17,9 +17,9 @@
       - "roboshop-{{ item }}"
     loop: "{{ instances }}"  
     register: ec2_output
-  - name: print ec2_output
-    debug:
-      msg: "{{ ec2_output }}"
+  # - name: print ec2_output
+  #   debug:
+  #     msg: "{{ ec2_output }}"
   - name: getting private ip address
     debug:
       msg: "Instance Name: {{ item.item }} privateIP: {{ item.instances[0].private_ip_address }}"
