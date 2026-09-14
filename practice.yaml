@@ -4,9 +4,10 @@
   tasks:
   - name: loops
     debug:
-      msg: "{{ i }}"
+      msg: "{{ item }}"
     loop: 
     - noor 
     - afrin 
     - shanu
     - milsaht
+    when: "noor == {{ noor }}"
