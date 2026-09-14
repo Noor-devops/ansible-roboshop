@@ -1,6 +1,8 @@
 - name: for my practice
   hosts: local
   connection: local
+  vars:
+    noor: ninja
   tasks:
   - name: loops
     debug:
@@ -10,4 +12,4 @@
     - afrin 
     - shanu
     - milsaht
-    when: "noor == {{ noor }}"
+    when: noor == "{{ noor }}"
