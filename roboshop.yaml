@@ -2,32 +2,32 @@
   hosts: local
   connection: local
   vars:
-    instances: mongodb
+    instances: ["mongodb", "redis", "mysql", "rabbitmq"]
     image_id: ami-0220d79f3f480ecf5
     domain_name: nirfaws.online
-    action: create
   tasks:
   - name: launching/creating ec2 instances
     amazon.aws.ec2_instance:
-      name: "roboshop-{{ instances }}"
+      name: "roboshop-{{ item }}"
       instance_type: t3.micro
       image_id: "{{ image_id }}"
       region: us-east-1
       security_groups: 
       - roboshop-common
-      - "roboshop-{{ instances }}"
+      - "roboshop-{{ item }}"
+    loop: "{{ instances }}"  
     register: ec2_output
-  # - name: print ec2_output
-  #   debug:
-  #     msg: "{{ ec2_output }}"
-  - name: getting private ip address
+  - name: print ec2_output
     debug:
-      msg: "privateIP: {{ ec2_output.instances[0].private_ip_address }}"
-  - name: create r53 records
-    amazon.aws.route53:
-      state: present
-      zone: "{{ domain_name }}"
-      record: "{{ instances }}.{{ domain_name }}" #mongodb.nirfaws.online
-      type: A
-      ttl: 1
-      value: "{{ ec2_output.instances[0].private_ip_address }}"
+      msg: "{{ ec2_output }}"
+  # - name: getting private ip address
+  #   debug:
+  #     msg: "privateIP: {{ ec2_output.instances[0].private_ip_address }}"
+  # - name: create r53 records
+  #   amazon.aws.route53:
+  #     state: present
+  #     zone: "{{ domain_name }}"
+  #     record: "{{ instances }}.{{ domain_name }}" #mongodb.nirfaws.online
+  #     type: A
+  #     ttl: 1
+  #     value: "{{ ec2_output.instances[0].private_ip_address }}"
