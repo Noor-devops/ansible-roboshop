@@ -31,7 +31,7 @@
     get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
       dest: /tmp/catalogue.zip
-  - name: unzip the catalogue
+  - name: unzip catalogue
     unarchive:
       src: /tmp/catalogue.zip
       dest: /app
