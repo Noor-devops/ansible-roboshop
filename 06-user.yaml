@@ -49,6 +49,7 @@
       daemon_reload: true
   - name: enable and start user
     service:
-      name: restarted
+      name: user
+      state: restarted
       enabled: yes
 
