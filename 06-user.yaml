@@ -39,8 +39,8 @@
   - name: Install dependencies
     community.general.npm:
       path: /app
-  - name: copying the user.service
-    copy:
+  - name: copy user service
+    template:
       src: user.service.j2
       dest: /etc/systemd/system/user.service
   - name: daemon reload
