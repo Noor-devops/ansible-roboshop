@@ -37,7 +37,7 @@
       dest: /app
       remote_src: yes
   - name: Installing dependencies
-    community:general.npm:
+    community.general.npm:
       path: /app
   - name: copying catalogue.service file
     copy:
