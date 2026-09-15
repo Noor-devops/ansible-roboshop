@@ -1,66 +1,71 @@
-- name: configuring shipping server
+- name: configure shipping server
   hosts: shipping
   become: yes
   tasks:
-  - name: Installing maven 
+  - name: install maven
     package:
-      name: maven
+      name: "{{ item }}"
       state: present
-  - name: creating roboshop user
+    loop:
+    - maven
+    - mysql
+  - name: create roboshop system user
     user:
       name: roboshop
       system: true
       home: /app
-      shell: /sbin/nologin 
-      comment: "roboshop system user"
-  - name: remove the app directory
+      shell: /sbin/nologin
+      comment: "Roboshop System user"
+  - name: remove app directory
     file:
       path: /app
       state: absent
-  - name: delete shipping.zip in /tmp
+  - name: delete shipping.zip in tmp directory
     file:
       path: /tmp/shipping.zip
       state: absent
   - name: create app directory
-    file: 
+    file:
       path: /app
       state: directory
-  - name: download shipping code
+  - name: download shipping
     get_url:
-      url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
-      dest: /tmp/cart.zip
-  - name: unzip the shipping code
+      url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip 
+      dest: /tmp/shipping.zip
+  - name: unzip shipping
     unarchive:
       src: /tmp/shipping.zip
       dest: /app
       remote_src: yes
   - name: install dependencies
-    command: mvn clean package 
+    command: mvn clean package
     args:
       chdir: /app
-  - name: move shipping.jar
+  - name: move shipping jar
     command: mv target/shipping-1.0.jar shipping.jar 
     args:
       chdir: /app
-  - name: copying shipping service
-    copy:
+  - name: copy shipping service
+    template:
       src: shipping.service.j2
       dest: /etc/systemd/system/shipping.service
-  - name: Installing mysql
-    package:
-      name: mysql
-      state: present
+
+  - name: install python dependencies
+    pip:
+      name: PyMySQL
+      executable: pip3.9
+
   - name: load mysql data
     community.mysql.mysql_db:
       state: import
       name: all
-      login_host: "{{ MYSQL_HOST }}"
       login_user: root
       login_password: RoboShop@1
+      login_host: "{{ MYSQL_HOST }}"
       target: "{{ item }}"
     loop:
     - /app/db/schema.sql
-    - /app/db/app-user.sql
+    - /app/db/app-user.sql 
     - /app/db/master-data.sql
   - name: deamon reload
     systemd_service:
