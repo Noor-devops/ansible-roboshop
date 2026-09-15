@@ -49,7 +49,7 @@
       daemon_reload: true
   - name: enable and start cart
     service:
-      name: user
+      name: cart
       state: restarted
       enabled: yes
 
